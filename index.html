@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboards</title>
+</head>
+<body>
+  <h1>Dashboards HTML</h1>
+  <ul id="lista"></ul>
+
+  <script>
+    const usuario = "lksventura";
+    const repo = "adriana";
+    const pasta = ""; // exemplo: "dashboards" ou "" para raiz
+
+    const basePages = `https://${usuario}.github.io/${repo}/`;
+    const api = `https://api.github.com/repos/${usuario}/${repo}/contents/${pasta}`;
+
+    fetch(api)
+      .then(res => res.json())
+      .then(arquivos => {
+        const lista = document.getElementById("lista");
+
+        arquivos
+          .filter(item => item.name.endsWith(".html") && item.name !== "index.html")
+          .forEach(item => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+
+            a.href = basePages + (pasta ? pasta + "/" : "") + item.name;
+            a.textContent = item.name;
+            a.target = "_blank";
+
+            li.appendChild(a);
+            lista.appendChild(li);
+          });
+      });
+  </script>
+</body>
+</html>
